@@ -45,16 +45,32 @@
     },
 
     appendButtons : function () {
-      console.log("in buttons");
-      var $footer = $('<div/>').addClass("footer");
+      // console.log("in buttons");
+      var $elevatorFooter = $('<div/>').addClass("elevator-footer");
 
       var $upButton = $('<button/>').html('&#9650;')
                         .addClass("elevator-button up");
-      $upButton.appendTo($footer);
+      $upButton.appendTo($elevatorFooter);
       var $downButton = $('<button/>').html('&#9660')
                           .addClass("elevator-button down");
-      $downButton.appendTo($footer);
-      $footer.appendTo(this.$el);
+      $downButton.appendTo($elevatorFooter);
+      $elevatorFooter.appendTo(this.$el);
+    },
+
+    removeButtons : function () {
+      $(".elevator-button up").remove();
+      $(".elevator-button down").remove();
+      $(".elevator-footer").remove();
+    },
+
+    toggleButtons : function () {
+      if($(".elevator-button").length === 0){
+        elevator.appendButtons();
+        elevator.bindElevate();
+      } else {
+        elevator.removeButtons();
+        // console.log("here");
+      }
     },
 
     bindElevate : function () {
@@ -97,18 +113,43 @@
       return true;
     },
 
+    bindButtonToggle : function () {
+      var keys = {};
+      window.addEventListener('keydown', function(e) {
+        keys[e.which] = true;
+        $(document).keydown(function (e) {
+          keys[e.which] = true;
+
+          addOrRemoveButtons();
+        });
+
+        $(document).keyup(function (e) {
+          delete keys[e.which];
+        });
+
+        function addOrRemoveButtons() {
+          if (keys.hasOwnProperty(17) && keys.hasOwnProperty(16) && keys.hasOwnProperty(66)){
+            elevator.toggleButtons();
+            // console.log("wtf");
+          }
+        }
+      }, false)
+    },
+
     main : function (element) {
       this.loadEndAudio();
       this.calcDuration();
-      this.appendButtons();
-      this.bindElevate();
-      console.log("in main");
+      // this.appendButtons();
+      // this.bindElevate();
+      this.toggleButtons();
+      this.bindButtonToggle();
+      // console.log("in main");
     },
   }
 
 
 })();
-console.log("in script");
+// console.log("in script");
 
 var $el = $("body");
 var elevator = new Elevators.Elevator($el);

@@ -11,22 +11,13 @@ body {
   /*position: absolute;*/
 }
 
-.footer {
+.elevator-footer {
   /*background: transparent;*/
   position: fixed;
   height: 30px;
   bottom: 0px;
   /*left: 0px;*/
   right: 100px;
-}
-
-.test {
-  position: fixed;
-  height: 30px;
-  bottom: 0px;
-  /*left: 0px;*/
-  right: 100px;
-  background: red;
 }
 
 .moving {
