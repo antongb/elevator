@@ -21,7 +21,7 @@
       }
       var $buttons = $(".elevator-button");
       var topOrBot = "0px";
-      console.log(option);
+      
       if ($(this).hasClass('down') || option === true) {
         topOrBot = $(document).height() - $(window).height();
       }
@@ -76,8 +76,9 @@
       $(".elevator-button").bind('click', this.elevate);
     },
 
-    calcDuration : function () {
-      duration = $(document).height() * 3;
+    setDuration : function () {
+      // duration = $(document).height() * 3;
+      duration = 5000;
     },
 
     loadEndAudio : function () {
@@ -138,16 +139,19 @@
           if (keys.hasOwnProperty(17) && keys.hasOwnProperty(16) && keys.hasOwnProperty(187)){
             //up
             this.stop();
-            console.log(keys);
             elevator.elevate(false, "up");
           }
+          if (keys.hasOwnProperty(17) && keys.hasOwnProperty(16) && keys.hasOwnProperty(221))
+              duration -= 1000
+          if (keys.hasOwnProperty(17) && keys.hasOwnProperty(16) && keys.hasOwnProperty(219))
+              duration += 1000
         }
       }, false)
     },
 
     main : function (element) {
       this.loadEndAudio();
-      this.calcDuration();
+      this.setDuration();
       this.bindButtonToggle();
     },
   }
