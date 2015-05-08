@@ -3,7 +3,7 @@
   "name": "page elevator",
   "description": "This extension adds elevator buttons, allowing user to
                   go up and down the current page in a fun way",
-  "version": "1.0",
+  "version": "1.1",
 
   "permissions": [
     "activeTab",

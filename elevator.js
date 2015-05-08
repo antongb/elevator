@@ -11,17 +11,18 @@
 
   Elevator.prototype = {
 
-    elevate : function () {
+    elevate : function (opt, key) {
+      var option = opt || false;
+      var keyboard = key || false
 
-      if (elevator.movable(this) === false){
+      if (!elevator.movable(this) || !elevator.movable(keyboard)){
         endAudio.play();
-        window.alert('cant move!');
         return;
       }
       var $buttons = $(".elevator-button");
       var topOrBot = "0px";
-
-      if ($(this).hasClass('down')) {
+      console.log(option);
+      if ($(this).hasClass('down') || option === true) {
         topOrBot = $(document).height() - $(window).height();
       }
 
@@ -45,7 +46,6 @@
     },
 
     appendButtons : function () {
-      // console.log("in buttons");
       var $elevatorFooter = $('<div/>').addClass("elevator-footer");
 
       var $upButton = $('<button/>').html('&#9650;')
@@ -69,7 +69,6 @@
         elevator.bindElevate();
       } else {
         elevator.removeButtons();
-        // console.log("here");
       }
     },
 
@@ -106,9 +105,9 @@
 
     movable : function (btn) {
       var docHeight = $(window).scrollTop() + $(window).height();
-      if ($(btn).hasClass('down') && docHeight === $(document).height())
+      if ((btn === "down" || $(btn).hasClass('down')) && docHeight === $(document).height())
         return false;
-      if ($(btn).hasClass('up') && $(window).scrollTop() === 0)
+      if ((btn === "up" || $(btn).hasClass('up')) && $(window).scrollTop() === 0)
         return false;
       return true;
     },
@@ -120,7 +119,7 @@
         $(document).keydown(function (e) {
           keys[e.which] = true;
 
-          addOrRemoveButtons();
+          addOrRemoveButtons().bind(e);
         });
 
         $(document).keyup(function (e) {
@@ -130,7 +129,17 @@
         function addOrRemoveButtons() {
           if (keys.hasOwnProperty(17) && keys.hasOwnProperty(16) && keys.hasOwnProperty(66)){
             elevator.toggleButtons();
-            // console.log("wtf");
+          }
+          if (keys.hasOwnProperty(17) && keys.hasOwnProperty(16) && keys.hasOwnProperty(189)){
+            //down
+            this.stop();
+            elevator.elevate(true, "down")
+          }
+          if (keys.hasOwnProperty(17) && keys.hasOwnProperty(16) && keys.hasOwnProperty(187)){
+            //up
+            this.stop();
+            console.log(keys);
+            elevator.elevate(false, "up");
           }
         }
       }, false)
@@ -139,20 +148,13 @@
     main : function (element) {
       this.loadEndAudio();
       this.calcDuration();
-      // this.appendButtons();
-      // this.bindElevate();
-      this.toggleButtons();
       this.bindButtonToggle();
-      // console.log("in main");
     },
   }
 
 
 })();
-// console.log("in script");
 
 var $el = $("body");
 var elevator = new Elevators.Elevator($el);
 elevator.main($el);
-//make buttons pretty
-//add window blur
